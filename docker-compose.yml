@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ggggg
+      POSTGRES_DB: giolotrello_dev
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  api:
+    build: .
+    command: ["mix", "phx.server"]
+    volumes:
+      - .:/app
+    environment:
+      DATABASE_URL: "ecto://postgres:postgres@db:5432/giolotrello_dev"
+      SECRET_KEY_BASE: "SOME_SECRET_KEY"
+      MIX_ENV: dev
+    depends_on:
+      - db
+    ports:
+      - "4000:4000"
+
+volumes:
+  db_data:
