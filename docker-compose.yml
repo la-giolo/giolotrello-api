@@ -9,6 +9,7 @@ services:
       - db_data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
+    restart: unless-stopped
 
   api:
     build: .
@@ -20,8 +21,18 @@ services:
       MIX_ENV: dev
     depends_on:
       - db
+    command: >
+      sh -c "
+      until nc -z db 5432; do
+        echo 'Waiting for Postgres...';
+        sleep 1;
+      done;
+      mix ecto.migrate &&
+      mix phx.server
+      "
     ports:
       - "4000:4000"
+    restart: unless-stopped
 
   client:
     build:
