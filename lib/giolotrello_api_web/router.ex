@@ -5,8 +5,18 @@ defmodule GiolotrelloApiWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug GiolotrelloApi.Auth.Pipeline
+  end
+
   scope "/api", GiolotrelloApiWeb do
     pipe_through :api
+
+    post "login", SessionController, :create
+  end
+
+  scope "/api", GiolotrelloApiWeb do
+    pipe_through [:api, GiolotrelloApiWeb.AuthPipeline]
 
     resources "/tasks", TaskController, except: [:new, :edit]
   end

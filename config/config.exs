@@ -31,6 +31,10 @@ config :giolotrello_api, GiolotrelloApiWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :giolotrello_api, GiolotrelloApi.Mailer, adapter: Swoosh.Adapters.Local
 
+config :giolotrello_api, GiolotrelloApi.Auth.Guardian,
+  issuer: "giolotrello_api",
+  secret_key: System.get_env("GUARDIAN_SECRET_KEY")
+
 # Configures Elixir's Logger
 config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",

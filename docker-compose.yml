@@ -20,11 +20,12 @@ services:
       - ./test:/app/test
       - ./mix.exs:/app/mix.exs
       - ./mix.lock:/app/mix.lock
-      - /app/deps
-      - /app/_build
+      - deps_api:/app/deps
+      - build_api:/app/_build
     environment:
       DATABASE_URL: "ecto://postgres:ggggg@db:5432/giolotrello_dev"
       SECRET_KEY_BASE: "SOME_SECRET_KEY"
+      GUARDIAN_SECRET_KEY: "88m6M2-RR1SHIjAuHVc80-I67IfEwOAJcZFAwVt_NxS-OJjsU69kb5P8Mln5XJS-"
       MIX_ENV: dev
     depends_on:
       - db
@@ -51,8 +52,8 @@ services:
       - ../giolotrello_client/assets:/app/assets
       - ../giolotrello_client/mix.exs:/app/mix.exs
       - ../giolotrello_client/mix.lock:/app/mix.lock
-      - /app/deps
-      - /app/_build
+      - deps_client:/app/deps
+      - build_client:/app/_build
     environment:
       SECRET_KEY_BASE: "ANOTHER_SECRET_KEY"
       MIX_ENV: dev
@@ -64,3 +65,7 @@ services:
 
 volumes:
   db_data:
+  deps_api:
+  build_api:
+  deps_client:
+  build_client:
