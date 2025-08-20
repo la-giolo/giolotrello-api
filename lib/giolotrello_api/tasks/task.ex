@@ -6,7 +6,7 @@ defmodule GiolotrelloApi.Tasks.Task do
     field :title, :string
     field :description, :string
     field :list_id, :id
-    field :assigned_to_id, :id
+    field :assignee_id, :id
 
     timestamps(type: :utc_datetime)
   end
