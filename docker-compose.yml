@@ -11,10 +11,17 @@ services:
       - "5433:5432"
     restart: unless-stopped
 
-  api:
+  giolotrello-api:
     build: .
     volumes:
-      - .:/app
+      - ./lib:/app/lib
+      - ./config:/app/config
+      - ./priv:/app/priv
+      - ./test:/app/test
+      - ./mix.exs:/app/mix.exs
+      - ./mix.lock:/app/mix.lock
+      - /app/deps
+      - /app/_build
     environment:
       DATABASE_URL: "ecto://postgres:ggggg@db:5432/giolotrello_dev"
       SECRET_KEY_BASE: "SOME_SECRET_KEY"
@@ -34,21 +41,26 @@ services:
       - "4000:4000"
     restart: unless-stopped
 
-  client:
+  giolotrello-client:
     build:
       context: ../giolotrello_client
     volumes:
-      - ../giolotrello_client:/app
+      - ../giolotrello_client/lib:/app/lib
+      - ../giolotrello_client/config:/app/config
+      - ../giolotrello_client/priv:/app/priv
+      - ../giolotrello_client/assets:/app/assets
+      - ../giolotrello_client/mix.exs:/app/mix.exs
+      - ../giolotrello_client/mix.lock:/app/mix.lock
       - /app/deps
       - /app/_build
     environment:
       SECRET_KEY_BASE: "ANOTHER_SECRET_KEY"
       MIX_ENV: dev
-      BACKEND_URL: "http://api:4000"
+      BACKEND_URL: "http://giolotrello-api:4000"
     depends_on:
-      - api
+      - giolotrello-api
     ports:
-      - "3000:4000"
+      - "3000:3000"
 
 volumes:
   db_data:
