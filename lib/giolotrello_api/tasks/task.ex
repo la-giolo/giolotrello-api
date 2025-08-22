@@ -14,7 +14,7 @@ defmodule GiolotrelloApi.Tasks.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:title, :description])
-    |> validate_required([:title, :description])
+    |> cast(attrs, [:title, :description, :list_id, :assignee_id])
+    |> validate_required([:title, :description, :list_id])
   end
 end
