@@ -6,7 +6,31 @@ defmodule GiolotrelloApi.Lists do
   import Ecto.Query, warn: false
 
   alias GiolotrelloApi.Repo
-  alias GiolotrelloApi.Lists.ListUser
+  alias GiolotrelloApi.Lists.{List, ListUser}
+
+  def get_list!(id) do
+    Repo.get!(List, id)
+  end
+
+  def create_list_with_owner(attrs, user_id) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(:list, List.changeset(%List{}, attrs))
+    |> Ecto.Multi.run(:list_user, fn repo, %{list: list} ->
+      list_user_attrs = %{"list_id" => list.id, "user_id" => user_id}
+      %ListUser{}
+      |> ListUser.changeset(list_user_attrs)
+      |> repo.insert()
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{list: list}} -> {:ok, list}
+      {:error, step, reason, _changes} -> {:error, step, reason}
+    end
+  end
+
+  def delete_list(%List{} = list) do
+    Repo.delete(list)
+  end
 
   def list_users_for_list(list_id) do
     from(lu in ListUser, where: lu.list_id == ^list_id, preload: [:user])

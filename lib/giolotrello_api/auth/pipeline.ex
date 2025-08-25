@@ -4,5 +4,6 @@ defmodule GiolotrelloApi.Auth.Pipeline do
                               error_handler: GiolotrelloApi.Auth.ErrorHandler
 
   plug Guardian.Plug.VerifyHeader, scheme: "Bearer"
-  plug Guardian.Plug.LoadResource, allow_blank: true
+  plug Guardian.Plug.EnsureAuthenticated
+  plug Guardian.Plug.LoadResource
 end

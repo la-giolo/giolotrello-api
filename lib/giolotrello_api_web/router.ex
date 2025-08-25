@@ -19,8 +19,8 @@ defmodule GiolotrelloApiWeb.Router do
     pipe_through [:api, GiolotrelloApiWeb.AuthPipeline]
 
     resources "/tasks", TaskController, except: [:new, :edit]
-    resources "/lists", ListController, only: [] do
-      resources "/users", ListUserController, only: [:index, :create, :show, :delete], param: "user_id"
+    resources "/lists", ListController, only: [:index, :create, :update, :delete] do
+      resources "/users", ListUserController, only: [:index, :create, :delete], param: "user_id"
     end
   end
 

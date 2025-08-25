@@ -5,6 +5,8 @@ defmodule GiolotrelloApi.Lists.List do
   schema "lists" do
     field :title, :string
 
+    has_many :list_users, GiolotrelloApi.Lists.ListUser, on_delete: :delete_all
+
     timestamps(type: :utc_datetime)
   end
 
