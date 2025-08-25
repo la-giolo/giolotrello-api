@@ -12,7 +12,9 @@ defmodule GiolotrelloApi.Lists.ListUser do
   @doc false
   def changeset(list_user, attrs) do
     list_user
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:list_id, :user_id])
+    |> validate_required([:list_id, :user_id])
+    |> foreign_key_constraint(:list_id)
+    |> foreign_key_constraint(:user_id)
   end
 end
