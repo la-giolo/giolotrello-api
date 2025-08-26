@@ -6,6 +6,7 @@ defmodule GiolotrelloApi.Tasks.Task do
     field :title, :string
     field :description, :string
     field :assignee_id, :id
+    field :position, :float
 
     belongs_to :list, GiolotrelloApi.Lists.List
 
@@ -15,7 +16,7 @@ defmodule GiolotrelloApi.Tasks.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:title, :description, :list_id, :assignee_id])
+    |> cast(attrs, [:title, :description, :list_id, :assignee_id, :position])
     |> validate_required([:title, :description, :list_id])
   end
 end

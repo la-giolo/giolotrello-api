@@ -18,6 +18,14 @@ defmodule GiolotrelloApi.Tasks do
 
   # Create a task
   def create_task(attrs \\ %{}) do
+    max_position =
+      Task
+      |> where(list_id: ^attrs["list_id"])
+      |> select([t], max(t.position))
+      |> Repo.one() || 0
+
+    attrs = Map.put(attrs, "position", max_position + 1000)
+
     %Task{}
     |> Task.changeset(attrs)
     |> Repo.insert()

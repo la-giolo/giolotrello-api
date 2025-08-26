@@ -6,6 +6,7 @@ defmodule GiolotrelloApi.Lists do
   import Ecto.Query, warn: false
 
   alias GiolotrelloApi.Repo
+  alias GiolotrelloApi.Tasks.Task
   alias GiolotrelloApi.Lists.{List, ListUser}
 
   def get_list!(id) do
@@ -43,7 +44,7 @@ defmodule GiolotrelloApi.Lists do
       from l in List,
         join: lu in ListUser, on: lu.list_id == l.id,
         where: lu.user_id == ^user_id,
-        preload: [:tasks]
+        preload: [tasks: ^from(t in Task, order_by: t.position)]
 
     Repo.all(query)
   end

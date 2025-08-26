@@ -18,6 +18,7 @@ defmodule GiolotrelloApiWeb.TaskJSON do
       description: task.description,
       list_id: task.list_id,
       assignee_id: task.assignee_id,
+      position: task.position,
       inserted_at: task.inserted_at,
       updated_at: task.updated_at
     }
