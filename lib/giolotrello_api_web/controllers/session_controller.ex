@@ -3,6 +3,7 @@ defmodule GiolotrelloApiWeb.SessionController do
   alias GiolotrelloApi.Users
   alias GiolotrelloApi.Auth.Guardian
 
+  # POST /api/login
   def create(conn, %{"email" => email, "password" => password}) do
     case Users.authenticate_user(email, password) do
       {:ok, user} ->

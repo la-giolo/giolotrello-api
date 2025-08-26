@@ -3,38 +3,35 @@ defmodule GiolotrelloApiWeb.TaskController do
 
   alias GiolotrelloApi.Tasks
   alias GiolotrelloApi.Tasks.Task
+  alias GiolotrelloApiWeb.TaskJSON
 
   action_fallback GiolotrelloApiWeb.FallbackController
 
+  # GET /api/tasks
   def index(conn, _params) do
     tasks = Tasks.list_tasks()
-    render(conn, :index, tasks: tasks)
+    render(conn, TaskJSON, "index.json", tasks: tasks)
   end
 
+  # POST /api/tasks
   def create(conn, %{"task" => task_params}) do
-    # Mock list_id = 1 for now
-    task_params = Map.put(task_params, "list_id", 1)
-
     with {:ok, %Task{} = task} <- Tasks.create_task(task_params) do
       conn
       |> put_status(:created)
-      |> render(:show, task: task)
+      |> render(TaskJSON, "show.json", task: task)
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    task = Tasks.get_task!(id)
-    render(conn, :show, task: task)
-  end
-
+  # PUT /api/tasks/:task_id
   def update(conn, %{"id" => id, "task" => task_params}) do
     task = Tasks.get_task!(id)
 
     with {:ok, %Task{} = task} <- Tasks.update_task(task, task_params) do
-      render(conn, :show, task: task)
+      render(conn, TaskJSON, "show.json", task: task)
     end
   end
 
+  # DELETE /api/tasks/:task_id
   def delete(conn, %{"id" => id}) do
     task = Tasks.get_task!(id)
 
