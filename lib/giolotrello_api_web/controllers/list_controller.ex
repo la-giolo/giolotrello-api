@@ -17,6 +17,23 @@ defmodule GiolotrelloApiWeb.ListController do
     end
   end
 
+  # PUT /api/lists/:id
+  def update(conn, %{"id" => id, "list" => list_params}) do
+    current_user = Guardian.Plug.current_resource(conn)
+
+    list = Lists.get_list!(id)
+
+    if Lists.user_can_update_list?(list.id, current_user.id) do
+      with {:ok, %List{} = updated_list} <- Lists.update_list(list, list_params) do
+        render(conn, :show, list: updated_list)
+      end
+    else
+      conn
+      |> put_status(:forbidden)
+      |> json(%{error: "You are not authorized to update this list"})
+    end
+  end
+
   # DELETE /api/lists/:id
   def delete(conn, %{"id" => id}) do
     list = Lists.get_list!(id)

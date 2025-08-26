@@ -28,6 +28,12 @@ defmodule GiolotrelloApi.Lists do
     end
   end
 
+  def update_list(%List{} = list, attrs) do
+    list
+    |> List.changeset(attrs)
+    |> Repo.update()
+  end
+
   def delete_list(%List{} = list) do
     Repo.delete(list)
   end
@@ -50,5 +56,13 @@ defmodule GiolotrelloApi.Lists do
       nil -> {:error, :not_found}
       lu  -> Repo.delete(lu)
     end
+  end
+
+  def user_can_update_list?(list_id, user_id) do
+    query =
+      from lu in ListUser,
+        where: lu.list_id == ^list_id and lu.user_id == ^user_id
+
+    Repo.exists?(query)
   end
 end
