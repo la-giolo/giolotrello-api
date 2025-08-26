@@ -38,6 +38,16 @@ defmodule GiolotrelloApi.Lists do
     Repo.delete(list)
   end
 
+  def get_user_lists_with_tasks(user_id) do
+    query =
+      from l in List,
+        join: lu in ListUser, on: lu.list_id == l.id,
+        where: lu.user_id == ^user_id,
+        preload: [:tasks]
+
+    Repo.all(query)
+  end
+
   def list_users_for_list(list_id) do
     from(lu in ListUser, where: lu.list_id == ^list_id, preload: [:user])
     |> Repo.all()

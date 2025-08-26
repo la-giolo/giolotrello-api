@@ -6,6 +6,15 @@ defmodule GiolotrelloApiWeb.ListController do
 
   action_fallback GiolotrelloApiWeb.FallbackController
 
+  # GET /api/lists
+  def index(conn, _params) do
+    current_user = Guardian.Plug.current_resource(conn)
+
+    lists = Lists.get_user_lists_with_tasks(current_user.id)
+
+    render(conn, GiolotrelloApiWeb.ListJSON, "index.json", lists: lists)
+  end
+
   # POST /api/lists
   def create(conn, %{"list" => list_params}) do
     current_user = Guardian.Plug.current_resource(conn)

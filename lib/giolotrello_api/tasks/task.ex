@@ -5,8 +5,9 @@ defmodule GiolotrelloApi.Tasks.Task do
   schema "tasks" do
     field :title, :string
     field :description, :string
-    field :list_id, :id
     field :assignee_id, :id
+
+    belongs_to :list, GiolotrelloApi.Lists.List
 
     timestamps(type: :utc_datetime)
   end

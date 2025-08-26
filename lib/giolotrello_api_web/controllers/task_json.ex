@@ -2,14 +2,10 @@ defmodule GiolotrelloApiWeb.TaskJSON do
   alias GiolotrelloApi.Tasks.Task
 
   def index(%{tasks: tasks}) do
-    %{data: (for task <- tasks, do: data(task))}
+    %{data: (for task <- tasks, do: show(task))}
   end
 
-  def show(%{task: task}) do
-    %{data: data(task)}
-  end
-
-  defp data(%Task{} = task) do
+  def show(%Task{} = task) do
     %{
       id: task.id,
       title: task.title,
