@@ -13,10 +13,8 @@ defmodule GiolotrelloApi.Tasks do
     Repo.all(Task)
   end
 
-  # Get a single task (raises if not found)
   def get_task!(id), do: Repo.get!(Task, id)
 
-  # Create a task
   def create_task(attrs \\ %{}) do
     max_position =
       Task
@@ -31,19 +29,62 @@ defmodule GiolotrelloApi.Tasks do
     |> Repo.insert()
   end
 
-  # Update a task
+  def update_task(%Task{} = task, %{"after_task_id" => after_task_id} = attrs) do
+    case after_task_id do
+      # Move to top
+      nil ->
+        first_task =
+          Task
+          |> where([t], t.list_id == ^task.list_id and t.id != ^task.id)
+          |> order_by(:position)
+          |> limit(1)
+          |> Repo.one()
+
+        new_position =
+          case first_task do
+            nil -> 1000
+            t -> t.position / 2
+          end
+
+        attrs = Map.put(attrs, "position", new_position)
+
+        task
+        |> Task.changeset(attrs)
+        |> Repo.update()
+
+      # Move after another task
+      after_task_id ->
+        after_task = Repo.get!(Task, after_task_id)
+
+        next_task =
+          Task
+          |> where([t], t.list_id == ^after_task.list_id and t.position > ^after_task.position)
+          |> order_by(:position)
+          |> limit(1)
+          |> Repo.one()
+
+        new_position =
+          case next_task do
+            nil -> after_task.position + 1000
+            t -> (after_task.position + t.position) / 2
+          end
+
+        attrs = Map.put(attrs, "position", new_position)
+        task |> Task.changeset(attrs) |> Repo.update()
+    end
+  end
+
   def update_task(%Task{} = task, attrs) do
     task
     |> Task.changeset(attrs)
     |> Repo.update()
   end
 
-  # Delete a task
   def delete_task(%Task{} = task) do
     Repo.delete(task)
   end
 
-  # Return a changeset for tracking changes
+  @spec change_task(%GiolotrelloApi.Tasks.Task{optional(atom()) => any()}) :: Ecto.Changeset.t()
   def change_task(%Task{} = task, attrs \\ %{}) do
     Task.changeset(task, attrs)
   end
