@@ -83,9 +83,4 @@ defmodule GiolotrelloApi.Tasks do
   def delete_task(%Task{} = task) do
     Repo.delete(task)
   end
-
-  @spec change_task(%GiolotrelloApi.Tasks.Task{optional(atom()) => any()}) :: Ecto.Changeset.t()
-  def change_task(%Task{} = task, attrs \\ %{}) do
-    Task.changeset(task, attrs)
-  end
 end

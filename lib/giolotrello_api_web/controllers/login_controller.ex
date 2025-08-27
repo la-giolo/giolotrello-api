@@ -1,4 +1,4 @@
-defmodule GiolotrelloApiWeb.SessionController do
+defmodule GiolotrelloApiWeb.LoginController do
   use GiolotrelloApiWeb, :controller
   alias GiolotrelloApi.Users
   alias GiolotrelloApi.Auth.Guardian
