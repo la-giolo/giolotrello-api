@@ -70,11 +70,18 @@ defmodule GiolotrelloApi.Tasks do
           end
 
         attrs = Map.put(attrs, "position", new_position)
-        task |> Task.changeset(attrs) |> Repo.update()
+
+        task
+        |> Task.changeset(attrs)
+        |> Repo.update()
     end
   end
 
   def update_task(%Task{} = task, attrs) do
+    # TODO:
+    # if list_id given
+    # check if i have user permission on the updated list_id value
+
     task
     |> Task.changeset(attrs)
     |> Repo.update()

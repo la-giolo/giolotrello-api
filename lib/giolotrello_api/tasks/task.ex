@@ -9,6 +9,7 @@ defmodule GiolotrelloApi.Tasks.Task do
     field :position, :float
 
     belongs_to :list, GiolotrelloApi.Lists.List
+    has_many :comments, GiolotrelloApi.Comments.Comment
 
     timestamps(type: :utc_datetime)
   end
