@@ -40,11 +40,16 @@ defmodule GiolotrelloApi.Lists do
   end
 
   def get_user_lists_with_tasks(user_id) do
+    task_query =
+      from t in Task,
+        order_by: t.position,
+        preload: [:comments]
+
     query =
       from l in List,
         join: lu in ListUser, on: lu.list_id == l.id,
         where: lu.user_id == ^user_id,
-        preload: [tasks: ^from(t in Task, order_by: t.position)]
+        preload: [tasks: ^task_query]
 
     Repo.all(query)
   end
