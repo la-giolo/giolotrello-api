@@ -22,7 +22,7 @@ defmodule GiolotrelloApiWeb.TaskJSON do
       position: task.position,
       inserted_at: task.inserted_at,
       updated_at: task.updated_at,
-      comments: Enum.map(task.comments || [], &comment_data/1)
+      comments: task_comments(task.comments)
     }
   end
 
@@ -35,4 +35,7 @@ defmodule GiolotrelloApiWeb.TaskJSON do
       updated_at: comment.updated_at
     }
   end
+
+  defp task_comments(%Ecto.Association.NotLoaded{}), do: []
+  defp task_comments(comments), do: Enum.map(comments, &comment_data/1)
 end
