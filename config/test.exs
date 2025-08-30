@@ -7,11 +7,12 @@ import Config
 # Run `mix help test` for more information.
 config :giolotrello_api, GiolotrelloApi.Repo,
   username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "giolotrello_api_test#{System.get_env("MIX_TEST_PARTITION")}",
+  password: "ggggg",
+  hostname: "db",
+  database: "giolotrello_test",
+  port: "5432",
   pool: Ecto.Adapters.SQL.Sandbox,
-  pool_size: System.schedulers_online() * 2
+  pool_size: 10
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
