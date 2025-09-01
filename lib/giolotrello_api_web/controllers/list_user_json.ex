@@ -13,7 +13,8 @@ defmodule GiolotrelloApiWeb.ListUserJSON do
     %{
       id: lu.id,
       list_id: lu.list_id,
-      user_id: lu.user_id
+      user_id: lu.user_id,
+      email: lu.user.email
     }
   end
 end

@@ -7,6 +7,7 @@ defmodule GiolotrelloApi.Lists do
 
   alias GiolotrelloApi.Repo
   alias GiolotrelloApi.Tasks.Task
+  alias GiolotrelloApi.Users.User
   alias GiolotrelloApi.Lists.{List, ListUser}
 
   def get_list!(id) do
@@ -55,8 +56,13 @@ defmodule GiolotrelloApi.Lists do
   end
 
   def list_users_for_list(list_id) do
-    from(lu in ListUser, where: lu.list_id == ^list_id, preload: [:user])
-    |> Repo.all()
+    query =
+      from lu in ListUser,
+        join: u in User, on: lu.user_id == u.id,
+        where: lu.list_id == ^list_id,
+        preload: [:user]
+
+    Repo.all(query)
   end
 
   def add_user_to_list(list_id, user_id) do
