@@ -3,6 +3,7 @@ defmodule GiolotrelloApiWeb.ListController do
 
   alias GiolotrelloApi.Lists
   alias GiolotrelloApi.Lists.List
+  alias GiolotrelloApiWeb.ListJSON
 
   action_fallback GiolotrelloApiWeb.FallbackController
 
@@ -12,7 +13,7 @@ defmodule GiolotrelloApiWeb.ListController do
 
     lists = Lists.get_user_lists_with_tasks(current_user.id)
 
-    render(conn, GiolotrelloApiWeb.ListJSON, "index.json", lists: lists)
+    json(conn, ListJSON.index(%{lists: lists}))
   end
 
   # POST /api/lists

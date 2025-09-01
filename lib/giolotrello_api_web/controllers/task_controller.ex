@@ -10,7 +10,7 @@ defmodule GiolotrelloApiWeb.TaskController do
   # GET /api/tasks
   def index(conn, _params) do
     tasks = Tasks.list_tasks()
-    render(conn, TaskJSON, "index.json", tasks: tasks)
+    json(conn, TaskJSON.index(%{tasks: tasks}))
   end
 
   # POST /api/tasks
@@ -18,7 +18,7 @@ defmodule GiolotrelloApiWeb.TaskController do
     with {:ok, %Task{} = task} <- Tasks.create_task(task_params) do
       conn
       |> put_status(:created)
-      |> render(TaskJSON, "show.json", task: task)
+      |> json(TaskJSON.show(%{task: task}))
     end
   end
 
@@ -27,7 +27,7 @@ defmodule GiolotrelloApiWeb.TaskController do
     task = Tasks.get_task!(id)
 
     with {:ok, %Task{} = task} <- Tasks.update_task(task, task_params) do
-      render(conn, TaskJSON, "show.json", task: task)
+      json(conn, TaskJSON.show(%{task: task}))
     end
   end
 
