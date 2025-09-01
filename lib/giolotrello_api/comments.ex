@@ -8,7 +8,9 @@ defmodule GiolotrelloApi.Comments do
   alias GiolotrelloApi.Comments.Comment
 
   def list_comments do
-    Repo.all(Comment)
+    Comment
+    |> Repo.all()
+    |> Repo.preload(:user)
   end
 
   def get_comment!(id), do: Repo.get!(Comment, id)

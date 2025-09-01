@@ -14,6 +14,7 @@ defmodule GiolotrelloApiWeb.CommentJSON do
       id: comment.id,
       body: comment.body,
       user_id: comment.user_id,
+      email: comment.user.email,
       task_id: comment.task_id
     }
   end
