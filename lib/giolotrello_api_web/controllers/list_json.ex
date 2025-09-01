@@ -16,7 +16,15 @@ defmodule GiolotrelloApiWeb.ListJSON do
     %{
       id: list.id,
       title: list.title,
-      tasks: Enum.map(list.tasks, &TaskJSON.show/1)
+      tasks: Enum.map(list.tasks, &TaskJSON.show/1),
+      users: Enum.map(
+        list.list_users, fn lu ->
+          %{
+            id: lu.user.id,
+            email: lu.user.email
+          }
+        end
+      )
     }
   end
 

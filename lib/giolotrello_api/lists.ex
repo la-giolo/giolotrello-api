@@ -50,10 +50,14 @@ defmodule GiolotrelloApi.Lists do
       from l in List,
         join: lu in ListUser, on: lu.list_id == l.id,
         where: lu.user_id == ^user_id,
-        preload: [tasks: ^task_query]
+        preload: [
+          tasks: ^task_query,
+          list_users: [:user]
+        ]
 
     Repo.all(query)
   end
+
 
   def list_users_for_list(list_id) do
     query =
