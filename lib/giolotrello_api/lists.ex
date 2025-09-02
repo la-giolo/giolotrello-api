@@ -8,6 +8,7 @@ defmodule GiolotrelloApi.Lists do
   alias GiolotrelloApi.Repo
   alias GiolotrelloApi.Tasks.Task
   alias GiolotrelloApi.Users.User
+  alias GiolotrelloApi.Comments.Comment
   alias GiolotrelloApi.Lists.{List, ListUser}
 
   def get_list!(id) do
@@ -44,7 +45,7 @@ defmodule GiolotrelloApi.Lists do
     task_query =
       from t in Task,
         order_by: t.position,
-        preload: [:comments]
+        preload: [comments: ^from(c in Comment, preload: [:user])]
 
     query =
       from l in List,
@@ -57,6 +58,7 @@ defmodule GiolotrelloApi.Lists do
 
     Repo.all(query)
   end
+
 
 
   def list_users_for_list(list_id) do

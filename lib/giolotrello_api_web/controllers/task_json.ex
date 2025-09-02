@@ -31,6 +31,7 @@ defmodule GiolotrelloApiWeb.TaskJSON do
       id: comment.id,
       body: comment.body,
       user_id: comment.user_id,
+      email: comment.user.email,
       inserted_at: comment.inserted_at,
       updated_at: comment.updated_at
     }
