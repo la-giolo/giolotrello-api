@@ -44,8 +44,7 @@ defmodule GiolotrelloApi.Lists do
   def get_user_lists_with_tasks(user_id) do
     task_query =
       from t in Task,
-        order_by: t.position,
-        preload: [comments: ^from(c in Comment, preload: [:user])]
+        order_by: t.position
 
     query =
       from l in List,
@@ -58,8 +57,6 @@ defmodule GiolotrelloApi.Lists do
 
     Repo.all(query)
   end
-
-
 
   def list_users_for_list(list_id) do
     query =
