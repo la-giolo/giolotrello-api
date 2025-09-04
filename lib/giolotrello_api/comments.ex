@@ -13,6 +13,14 @@ defmodule GiolotrelloApi.Comments do
     |> Repo.preload(:user)
   end
 
+  def list_comments_by_task(task_id) do
+    Comment
+    |> where(task_id: ^task_id)
+    |> Repo.all()
+    |> Repo.preload(:user)
+  end
+
+  @spec get_comment!(any()) :: any()
   def get_comment!(id), do: Repo.get!(Comment, id)
 
   def create_comment(attrs) do

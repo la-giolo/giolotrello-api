@@ -6,8 +6,9 @@ defmodule GiolotrelloApiWeb.CommentController do
 
   action_fallback GiolotrelloApiWeb.FallbackController
 
-  def index(conn, _params) do
-    comments = Comments.list_comments()
+  # GET /api/tasks/:task_id/comments
+  def index(conn, %{"task_id" => task_id}) do
+    comments = Comments.list_comments_by_task(task_id)
     render(conn, :index, comments: comments)
   end
 
