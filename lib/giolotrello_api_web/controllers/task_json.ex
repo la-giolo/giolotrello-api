@@ -1,6 +1,5 @@
 defmodule GiolotrelloApiWeb.TaskJSON do
   alias GiolotrelloApi.Tasks.Task
-  alias GiolotrelloApi.Comments.Comment
 
   def index(%{tasks: tasks}) do
     %{data: Enum.map(tasks, &show/1)}

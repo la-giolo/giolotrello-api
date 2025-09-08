@@ -8,7 +8,6 @@ defmodule GiolotrelloApi.Lists do
   alias GiolotrelloApi.Repo
   alias GiolotrelloApi.Tasks.Task
   alias GiolotrelloApi.Users.User
-  alias GiolotrelloApi.Comments.Comment
   alias GiolotrelloApi.Lists.{List, ListUser}
 
   def get_list!(id) do

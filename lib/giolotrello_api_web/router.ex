@@ -13,6 +13,7 @@ defmodule GiolotrelloApiWeb.Router do
     pipe_through :api
 
     post "/login", LoginController, :create
+    post "/users", UserController, :create
   end
 
   scope "/api", GiolotrelloApiWeb do
