@@ -19,6 +19,8 @@ defmodule GiolotrelloApiWeb.Router do
   scope "/api", GiolotrelloApiWeb do
     pipe_through [:api, GiolotrelloApiWeb.AuthPipeline]
 
+    get "/users", UserController, :index
+
     resources "/tasks", TaskController, only: [:index, :create, :update, :delete] do
       resources "/comments", CommentController, only: [:index, :create, :update, :delete], param: "comment_id"
     end

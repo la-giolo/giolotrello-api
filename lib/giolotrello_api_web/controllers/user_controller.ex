@@ -2,8 +2,12 @@ defmodule GiolotrelloApiWeb.UserController do
   use GiolotrelloApiWeb, :controller
 
   alias GiolotrelloApi.Users
-  alias GiolotrelloApi.Users.User
-  alias GiolotrelloApiWeb.UserJSON
+
+  # GET /api/users
+  def index(conn, _params) do
+    users = Users.list_users()
+    render(conn, :index, users: users)
+  end
 
   # POST /api/users
   def create(conn, %{"user" => user_params}) do
