@@ -15,5 +15,6 @@ defmodule GiolotrelloApi.Users.User do
     user
     |> cast(attrs, [:email, :password])
     |> validate_required([:email, :password])
+    |> unique_constraint(:email, message: "Email has already been taken")
   end
 end

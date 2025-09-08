@@ -7,10 +7,17 @@ defmodule GiolotrelloApiWeb.UserController do
 
   # POST /api/users
   def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Users.create_user(user_params) do
-      conn
-      |> put_status(:created)
-      |> json(UserJSON.show(user))
+    case Users.create_user(user_params) do
+      {:ok, user} ->
+        conn
+        |> put_status(:created)
+        |> render(:show, user: user)
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> put_view(json: GiolotrelloApiWeb.ChangesetJSON)
+        |> render("error.json", changeset: changeset)
     end
   end
 end
