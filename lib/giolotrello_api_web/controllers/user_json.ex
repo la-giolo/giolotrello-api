@@ -2,7 +2,7 @@ defmodule GiolotrelloApiWeb.UserJSON do
   alias GiolotrelloApi.Users.User
 
   def index(%{users: users}) do
-    %{data: for(user <- users, do: data(user))}
+    %{users: for(user <- users, do: data(user))}
   end
 
   def show(%User{} = user), do: data(user)
